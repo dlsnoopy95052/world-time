@@ -19,9 +19,9 @@ struct AddCityView: View {
                     Image(systemName: "chevron.left")
                 }
                 .buttonStyle(.borderless)
-                .help("Back")
+                .help(L("Back"))
 
-                TextField("Search city, country or time zone", text: $query)
+                TextField(L("Search city, country or time zone"), text: $query)
                     .textFieldStyle(.roundedBorder)
                     .focused($isSearchFocused)
                     .onSubmit { if let first = results.first { add(first) } }
@@ -55,8 +55,8 @@ struct AddCityView: View {
         } label: {
             HStack {
                 VStack(alignment: .leading, spacing: 1) {
-                    Text(entry.name)
-                    Text("\(entry.region) · \(Formatters.abbreviation(of: zone, at: clock.now))")
+                    Text(CityCatalog.displayName(of: entry))
+                    Text("\(CityCatalog.regionName(of: entry)) · \(Formatters.abbreviation(of: zone, at: clock.now))")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

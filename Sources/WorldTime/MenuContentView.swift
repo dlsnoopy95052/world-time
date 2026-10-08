@@ -3,6 +3,8 @@ import SwiftUI
 struct MenuContentView: View {
     @EnvironmentObject private var store: CityStore
     @EnvironmentObject private var launchAtLogin: LaunchAtLogin
+    // Observed so the whole popover re-renders when the language changes.
+    @EnvironmentObject private var preferences: Preferences
     @State private var isAddingCity = false
 
     var body: some View {
@@ -25,7 +27,7 @@ struct MenuContentView: View {
             Divider().padding(.horizontal, 14)
 
             if store.cities.isEmpty {
-                Text("Add up to \(CityStore.maxCities) cities to compare times.")
+                Text(L("Add up to %d cities to compare times.", CityStore.maxCities))
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 14)
@@ -33,7 +35,7 @@ struct MenuContentView: View {
             } else {
                 ForEach(Array(store.cities.enumerated()), id: \.element.id) { index, city in
                     ClockRow(
-                        title: city.name,
+                        title: CityNames.displayName(city.name, timeZoneID: city.timeZoneID),
                         timeZone: city.timeZone,
                         isLocal: false,
                         onRemove: { store.remove(city) },
@@ -44,17 +46,17 @@ struct MenuContentView: View {
             }
 
             HStack {
-                Text("\(store.cities.count) of \(CityStore.maxCities) cities")
+                Text(L("%1$d of %2$d cities", store.cities.count, CityStore.maxCities))
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
                 Button {
                     isAddingCity = true
                 } label: {
-                    Label("Add City", systemImage: "plus")
+                    Label(L("Add City"), systemImage: "plus")
                 }
                 .disabled(store.isFull)
-                .help(store.isFull ? "Remove a city to add another." : "Add a city")
+                .help(store.isFull ? L("Remove a city to add another.") : L("Add City"))
             }
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
@@ -69,7 +71,7 @@ struct MenuContentView: View {
 
             HStack {
                 Spacer()
-                Button("Quit World Time") { NSApplication.shared.terminate(nil) }
+                Button(L("Quit World Time")) { NSApplication.shared.terminate(nil) }
                     .keyboardShortcut("q")
             }
             .padding(.horizontal, 14)
@@ -79,6 +81,6 @@ struct MenuContentView: View {
 
     private var localCityName: String {
         let id = TimeZone.current.identifier
-        return id.split(separator: "/").last.map { $0.replacingOccurrences(of: "_", with: " ") } ?? id
+        return CityNames.displayName(CityNames.identifierCityName(id), timeZoneID: id)
     }
 }

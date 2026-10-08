@@ -14,8 +14,10 @@ final class Clock: ObservableObject {
     private var timer: Timer?
     private var interval: TimeInterval = 60
     private var cancellables = Set<AnyCancellable>()
+    private weak var preferences: Preferences?
 
     init(preferences: Preferences) {
+        self.preferences = preferences
         preferences.$showSeconds
             .sink { [weak self] showSeconds in
                 MainActor.assumeIsolated {
@@ -43,6 +45,7 @@ final class Clock: ObservableObject {
 
     private func systemDidChange() {
         NSTimeZone.resetSystemTimeZone()
+        if let preferences { Localization.apply(preferences.language) }
         Formatters.reset()
         restart()
     }

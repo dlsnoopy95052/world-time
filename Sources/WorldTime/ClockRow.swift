@@ -21,11 +21,15 @@ struct ClockRow: View {
                     Text(title)
                         .font(.headline)
                         .lineLimit(1)
-                    if isLocal { Badge(text: "LOCAL", color: .accentColor) }
-                    if timeZone.isDaylightSavingTime(for: now) { Badge(text: "DST", color: .orange) }
+                    if isLocal { Badge(text: L("LOCAL"), color: .accentColor) }
+                    if timeZone.isDaylightSavingTime(for: now) { Badge(text: L("DST"), color: .orange) }
                 }
                 Text(Formatters.string(now, template: "EEEMMMdyyyy", in: timeZone))
                     .font(.caption)
+                if Localization.isChinese {
+                    Text(L("Lunar calendar: %@", Formatters.lunarDate(now, in: timeZone)))
+                        .font(.caption)
+                }
                 Text(Formatters.abbreviation(of: timeZone, at: now))
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -55,7 +59,7 @@ struct ClockRow: View {
                         .foregroundStyle(.secondary)
                 }
                 .buttonStyle(.plain)
-                .help("Remove \(title)")
+                .help(L("Remove %@", title))
                 .opacity(isHovering ? 1 : 0)
             }
         }
@@ -65,16 +69,16 @@ struct ClockRow: View {
         .contentShape(Rectangle())
         .onHover { isHovering = $0 }
         .contextMenu {
-            if let onMoveUp { Button("Move Up", action: onMoveUp) }
-            if let onMoveDown { Button("Move Down", action: onMoveDown) }
-            if let onRemove { Button("Remove", role: .destructive, action: onRemove) }
+            if let onMoveUp { Button(L("Move Up"), action: onMoveUp) }
+            if let onMoveDown { Button(L("Move Down"), action: onMoveDown) }
+            if let onRemove { Button(L("Remove"), role: .destructive, action: onRemove) }
         }
     }
 
     private func relativeDescription(at now: Date) -> String {
         let difference = Formatters.difference(from: .current, to: timeZone, at: now)
         guard let day = Formatters.dayRelation(from: .current, to: timeZone, at: now) else { return difference }
-        return "\(day), \(difference)"
+        return L("%1$@, %2$@", day, difference)
     }
 }
 

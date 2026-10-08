@@ -5,7 +5,19 @@ import ServiceManagement
 @MainActor
 final class LaunchAtLogin: ObservableObject {
     @Published private(set) var isEnabled = false
-    @Published private(set) var message: String?
+    @Published private(set) var problem: Problem?
+
+    enum Problem: Equatable {
+        case requiresApproval
+        case failed(String)
+
+        @MainActor var message: String {
+            switch self {
+            case .requiresApproval: L("Allow World Time in System Settings › General › Login Items.")
+            case .failed(let error): L("Couldn't update login item: %@", error)
+            }
+        }
+    }
 
     init() {
         refresh()
@@ -14,9 +26,7 @@ final class LaunchAtLogin: ObservableObject {
     func refresh() {
         let status = SMAppService.mainApp.status
         isEnabled = status == .enabled || status == .requiresApproval
-        message = status == .requiresApproval
-            ? "Allow World Time in System Settings › General › Login Items."
-            : nil
+        problem = status == .requiresApproval ? .requiresApproval : nil
     }
 
     func setEnabled(_ enabled: Bool) {
@@ -29,7 +39,7 @@ final class LaunchAtLogin: ObservableObject {
             refresh()
         } catch {
             refresh()
-            message = "Couldn't update login item: \(error.localizedDescription)"
+            problem = .failed(error.localizedDescription)
         }
     }
 

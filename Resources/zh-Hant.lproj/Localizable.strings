@@ -1,0 +1,42 @@
+/* Main popover */
+"LOCAL" = "本地";
+"DST" = "夏令時間";
+"Add up to %d cities to compare times." = "最多可加入 %d 個城市來比較時間。";
+"%1$d of %2$d cities" = "%1$d／%2$d 個城市";
+"Add City" = "加入城市";
+"Remove a city to add another." = "請先移除一個城市才能再加入。";
+"Quit World Time" = "結束世界時間";
+"Remove %@" = "移除「%@」";
+"Move Up" = "上移";
+"Move Down" = "下移";
+"Remove" = "移除";
+
+/* Time differences */
+"Same time" = "時間相同";
+"%@h" = "%@ 小時";
+"Tomorrow" = "明天";
+"Yesterday" = "昨天";
+"%1$@, %2$@" = "%1$@，%2$@";
+"Clocks go forward %1$@h on %2$@" = "%2$@ 時鐘將撥快 %1$@ 小時";
+"Clocks go back %1$@h on %2$@" = "%2$@ 時鐘將撥慢 %1$@ 小時";
+"Coordinated Universal Time" = "世界協調時間";
+"Lunar calendar: %@" = "農曆 %@";
+
+/* Add city */
+"Back" = "返回";
+"Search city, country or time zone" = "搜尋城市、國家或時區";
+
+/* Settings */
+"Clock" = "時鐘";
+"12-hour" = "12 小時制";
+"24-hour" = "24 小時制";
+"Language" = "語言";
+"System" = "跟隨系統";
+"Show seconds" = "顯示秒數";
+"Show day in menu bar" = "在選單列顯示星期";
+"Show date in menu bar" = "在選單列顯示日期";
+"Show lunar date in menu bar" = "在選單列顯示農曆";
+"Launch at login" = "登入時啟動";
+"Allow World Time in System Settings › General › Login Items." = "請到「系統設定」›「一般」›「登入項目」允許「世界時間」。";
+"Couldn't update login item: %@" = "無法更新登入項目：%@";
+"Open Login Items Settings…" = "打開登入項目設定⋯";

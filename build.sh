@@ -37,6 +37,7 @@ cp build/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
     Sources/WorldTime/*.swift
 
 cp Resources/Info.plist "$APP/Contents/Info.plist"
+cp -R Resources/*.lproj "$APP/Contents/Resources/"
 codesign --force --sign - "$APP"
 echo "Built $APP"
 

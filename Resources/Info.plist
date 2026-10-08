@@ -4,6 +4,13 @@
 <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
+    <key>CFBundleLocalizations</key>
+    <array>
+        <string>en</string>
+        <string>zh-Hant</string>
+    </array>
+    <key>LSHasLocalizedDisplayName</key>
+    <true/>
     <key>CFBundleExecutable</key>
     <string>WorldTime</string>
     <key>CFBundleIconFile</key>

@@ -8,6 +8,8 @@ final class Preferences: ObservableObject {
         static let showSeconds = "showSeconds"
         static let showDayInMenuBar = "showDayInMenuBar"
         static let showDateInMenuBar = "showDateInMenuBar"
+        static let language = "language"
+        static let showLunarInMenuBar = "showLunarInMenuBar"
     }
 
     private let defaults: UserDefaults
@@ -16,6 +18,13 @@ final class Preferences: ObservableObject {
     @Published var showSeconds: Bool { didSet { defaults.set(showSeconds, forKey: Key.showSeconds) } }
     @Published var showDayInMenuBar: Bool { didSet { defaults.set(showDayInMenuBar, forKey: Key.showDayInMenuBar) } }
     @Published var showDateInMenuBar: Bool { didSet { defaults.set(showDateInMenuBar, forKey: Key.showDateInMenuBar) } }
+    @Published var showLunarInMenuBar: Bool { didSet { defaults.set(showLunarInMenuBar, forKey: Key.showLunarInMenuBar) } }
+    @Published var language: AppLanguage {
+        didSet {
+            defaults.set(language.rawValue, forKey: Key.language)
+            Localization.apply(language)
+        }
+    }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -26,5 +35,8 @@ final class Preferences: ObservableObject {
         showSeconds = defaults.object(forKey: Key.showSeconds) as? Bool ?? false
         showDayInMenuBar = defaults.object(forKey: Key.showDayInMenuBar) as? Bool ?? true
         showDateInMenuBar = defaults.object(forKey: Key.showDateInMenuBar) as? Bool ?? true
+        showLunarInMenuBar = defaults.object(forKey: Key.showLunarInMenuBar) as? Bool ?? false
+        language = defaults.string(forKey: Key.language).flatMap(AppLanguage.init(rawValue:)) ?? .system
+        Localization.apply(language)
     }
 }

@@ -36,9 +36,15 @@ struct WorldTimeApp: App {
         var dateTemplate = ""
         if preferences.showDayInMenuBar { dateTemplate += "EEE" }
         if preferences.showDateInMenuBar { dateTemplate += "MMMd" }
-        let time = Formatters.time(clock.now, in: local, preferences: preferences)
-        guard !dateTemplate.isEmpty else { return time }
-        return Formatters.string(clock.now, template: dateTemplate, in: local) + "  " + time
+        var parts: [String] = []
+        if !dateTemplate.isEmpty {
+            parts.append(Formatters.string(clock.now, template: dateTemplate, in: local))
+        }
+        if Localization.isChinese && preferences.showLunarInMenuBar {
+            parts.append(Formatters.lunarDate(clock.now, in: local, includeYear: false))
+        }
+        parts.append(Formatters.time(clock.now, in: local, preferences: preferences))
+        return parts.joined(separator: "  ")
     }
 }
 
