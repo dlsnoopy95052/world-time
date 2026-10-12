@@ -6,6 +6,7 @@ struct MenuContentView: View {
     // Observed so the whole popover re-renders when the language changes.
     @EnvironmentObject private var preferences: Preferences
     @State private var isAddingCity = false
+    @State private var showSettings = false
 
     var body: some View {
         Group {
@@ -45,28 +46,6 @@ struct MenuContentView: View {
                 }
             }
 
-            HStack {
-                Text(L("%1$d of %2$d cities", store.cities.count, CityStore.maxCities))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                Spacer()
-                Button {
-                    isAddingCity = true
-                } label: {
-                    Label(L("Add City"), systemImage: "plus")
-                }
-                .disabled(store.isFull)
-                .help(store.isFull ? L("Remove a city to add another.") : L("Add City"))
-            }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 8)
-
-            Divider()
-
-            SettingsSection()
-                .padding(.horizontal, 14)
-                .padding(.vertical, 10)
-
             Divider()
 
             CalendarView()
@@ -75,7 +54,39 @@ struct MenuContentView: View {
 
             Divider()
 
+            if showSettings {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text(L("%1$d of %2$d cities", store.cities.count, CityStore.maxCities))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        Button {
+                            isAddingCity = true
+                        } label: {
+                            Label(L("Add City"), systemImage: "plus")
+                        }
+                        .disabled(store.isFull)
+                        .help(store.isFull ? L("Remove a city to add another.") : L("Add City"))
+                    }
+
+                    Divider()
+
+                    SettingsSection()
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+
+                Divider()
+            }
+
             HStack {
+                Button {
+                    showSettings.toggle()
+                } label: {
+                    Label(L("Settings"), systemImage: "gearshape")
+                }
+                .help(L("Settings"))
                 Spacer()
                 Button(L("Quit World Time")) { NSApplication.shared.terminate(nil) }
                     .keyboardShortcut("q")
