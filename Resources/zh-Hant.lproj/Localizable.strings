@@ -22,6 +22,11 @@
 "Coordinated Universal Time" = "世界協調時間";
 "Lunar calendar: %@" = "農曆 %@";
 
+/* Calendar */
+"Today" = "今天";
+"Previous month" = "上個月";
+"Next month" = "下個月";
+
 /* Add city */
 "Back" = "返回";
 "Search city, country or time zone" = "搜尋城市、國家或時區";

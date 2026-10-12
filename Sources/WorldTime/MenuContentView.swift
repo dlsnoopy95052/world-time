@@ -69,6 +69,12 @@ struct MenuContentView: View {
 
             Divider()
 
+            CalendarView()
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+
+            Divider()
+
             HStack {
                 Spacer()
                 Button(L("Quit World Time")) { NSApplication.shared.terminate(nil) }
