@@ -11,6 +11,12 @@
 "Move Down" = "下移";
 "Remove" = "移除";
 
+/* Day periods */
+"Morning" = "早上";
+"Afternoon" = "下午";
+"Evening" = "傍晚";
+"Night" = "晚上";
+
 /* Time differences */
 "Same time" = "時間相同";
 "%@h" = "%@ 小時";

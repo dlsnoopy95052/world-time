@@ -46,6 +46,14 @@ struct ClockRow: View {
                 Text(Formatters.time(now, in: timeZone, preferences: preferences))
                     .font(.system(size: 22, weight: .medium, design: .rounded))
                     .monospacedDigit()
+                let period = DayPeriod(date: now, in: timeZone)
+                Label {
+                    Text(L(period.title))
+                        .font(.system(size: 12, weight: .medium))
+                } icon: {
+                    Image(systemName: period.symbol)
+                        .foregroundStyle(period.color)
+                }
                 if !isLocal {
                     Text(relativeDescription(at: now))
                         .font(.caption)
@@ -96,5 +104,49 @@ private struct Badge: View {
             .padding(.vertical, 1)
             .foregroundStyle(color)
             .background(color.opacity(0.15), in: RoundedRectangle(cornerRadius: 3))
+    }
+}
+
+/// Rough part of the day in a city's local time, shown as an icon plus a plain word.
+private enum DayPeriod {
+    case morning, afternoon, evening, night
+
+    init(date: Date, in timeZone: TimeZone) {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = timeZone
+        switch calendar.component(.hour, from: date) {
+        case 5..<12: self = .morning
+        case 12..<17: self = .afternoon
+        case 17..<20: self = .evening
+        default: self = .night
+        }
+    }
+
+    /// English text, used as the localization key.
+    var title: String {
+        switch self {
+        case .morning: "Morning"
+        case .afternoon: "Afternoon"
+        case .evening: "Evening"
+        case .night: "Night"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .morning: "sunrise.fill"
+        case .afternoon: "sun.max.fill"
+        case .evening: "sunset.fill"
+        case .night: "moon.stars.fill"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .morning: .orange
+        case .afternoon: .yellow
+        case .evening: .red
+        case .night: .indigo
+        }
     }
 }
