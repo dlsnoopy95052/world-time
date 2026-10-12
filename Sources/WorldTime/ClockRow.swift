@@ -61,6 +61,9 @@ struct ClockRow: View {
                 .buttonStyle(.plain)
                 .help(L("Remove %@", title))
                 .opacity(isHovering ? 1 : 0)
+            } else {
+                // Reserve the remove button's width so times line up with the other rows.
+                Image(systemName: "minus.circle.fill").hidden()
             }
         }
         .padding(.horizontal, 14)
