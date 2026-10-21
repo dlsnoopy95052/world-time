@@ -11,7 +11,7 @@ A macOS (Sonoma 14+) menu bar clock showing local time plus up to 5 more cities.
   follow macOS (including the per-app language in System Settings › General › Language & Region).
   Dates, weekdays, AM/PM, city and country names, and the Launchpad name (世界時間) are all translated
 - In Chinese, each clock also shows its Chinese lunar date (農曆), e.g. 丙午（馬）年八月廿八, with an
-  option to show it in the menu bar
+  option to show it in the menu bar, labeled 農曆 (e.g. 10月21日 · 農曆九月初十  14:32)
 - Daylight saving: cities are stored by IANA time zone ID, so offsets come from macOS's time zone
   database for each instant. A **DST** badge shows when a zone is on summer time, and a notice
   appears up to 14 days before its clocks change. The clock also refreshes immediately when the
