@@ -8,12 +8,16 @@ struct CalendarView: View {
 
     /// Any date within the month being shown.
     @State private var month = Date()
+    /// Day of the holiday cell under the pointer. The system `.help` tooltip doesn't appear in a
+    /// menu bar popover, so the name is drawn as a bubble instead.
+    @State private var hoveredDay: Date?
 
     private var calendar: Calendar { .autoupdatingCurrent }
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 7)
 
     var body: some View {
         let today = clock.now
+        let holidays = USHolidays.names(in: calendar.component(.year, from: month))
         let isCurrentMonth = calendar.isDate(month, equalTo: today, toGranularity: .month)
 
         VStack(spacing: 6) {
@@ -39,9 +43,9 @@ struct CalendarView: View {
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
-                ForEach(Array(cells.enumerated()), id: \.offset) { _, date in
+                ForEach(Array(cells.enumerated()), id: \.offset) { index, date in
                     if let date {
-                        dayCell(date, isToday: calendar.isDate(date, inSameDayAs: today))
+                        dayCell(date, isToday: calendar.isDate(date, inSameDayAs: today), holiday: holidays[holidayKey(date)], column: index % 7)
                     } else {
                         Color.clear.frame(height: 26)
                     }
@@ -52,14 +56,40 @@ struct CalendarView: View {
         .onAppear { month = clock.now }
     }
 
-    private func dayCell(_ date: Date, isToday: Bool) -> some View {
-        Text("\(calendar.component(.day, from: date))")
-            .font(.system(size: 12, weight: isToday ? .bold : .regular))
+    private func dayCell(_ date: Date, isToday: Bool, holiday: String?, column: Int) -> some View {
+        let isHoliday = holiday != nil
+        return Text("\(calendar.component(.day, from: date))")
+            .font(.system(size: 12, weight: isToday || isHoliday ? .bold : .regular))
             .monospacedDigit()
-            .foregroundStyle(isToday ? Color.white : Color.primary)
+            .foregroundStyle(isToday ? Color.white : isHoliday ? Color.red : Color.primary)
             .frame(width: 26, height: 26)
             .background(Circle().fill(isToday ? Color.accentColor : .clear))
+            .overlay(Circle().strokeBorder(isHoliday && !isToday ? Color.red.opacity(0.6) : .clear, lineWidth: 1))
+            .contentShape(Circle())
+            .onHover { inside in
+                if inside, holiday != nil { hoveredDay = date }
+                else if hoveredDay == date { hoveredDay = nil }
+            }
+            .overlay(alignment: column < 2 ? .topLeading : column > 4 ? .topTrailing : .top) {
+                if let holiday, hoveredDay == date {
+                    Text(holiday)
+                        .font(.caption)
+                        .fixedSize()
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                        .background(RoundedRectangle(cornerRadius: 5).fill(.regularMaterial))
+                        .overlay(RoundedRectangle(cornerRadius: 5).strokeBorder(Color.secondary.opacity(0.3)))
+                        .offset(y: -28)
+                        .allowsHitTesting(false)
+                }
+            }
+            .zIndex(hoveredDay == date ? 1 : 0)
             .frame(maxWidth: .infinity)
+    }
+
+    private func holidayKey(_ date: Date) -> String {
+        let parts = calendar.dateComponents([.year, .month, .day], from: date)
+        return "\(parts.year!)-\(parts.month!)-\(parts.day!)"
     }
 
     private func shift(by months: Int) {

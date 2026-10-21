@@ -52,3 +52,17 @@
 "Allow World Time in System Settings › General › Login Items." = "請到「系統設定」›「一般」›「登入項目」允許「世界時間」。";
 "Couldn't update login item: %@" = "無法更新登入項目：%@";
 "Open Login Items Settings…" = "打開登入項目設定⋯";
+
+/* US holidays */
+"New Year's Day" = "元旦";
+"Martin Luther King Jr. Day" = "馬丁・路德・金恩紀念日";
+"Presidents' Day" = "總統日";
+"Memorial Day" = "陣亡將士紀念日";
+"Juneteenth" = "六月節（解放紀念日）";
+"Independence Day" = "獨立紀念日";
+"Labor Day" = "勞動節";
+"Columbus Day" = "哥倫布日";
+"Veterans Day" = "退伍軍人節";
+"Thanksgiving" = "感恩節";
+"Christmas Day" = "聖誕節";
+"%@ (observed)" = "%@（補假）";
