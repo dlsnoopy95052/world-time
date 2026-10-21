@@ -30,7 +30,7 @@ struct WorldTimeApp: App {
         .menuBarExtraStyle(.window)
     }
 
-    /// e.g. "Thu, Oct 8  2:32 PM", or "10月8日 · 八月廿八  14:32" with the lunar date
+    /// e.g. "Thu, Oct 8  2:32 PM", or "10月8日 · 農曆八月廿八  14:32" with the lunar date
     private var menuBarTitle: String {
         let local = TimeZone.current
         var dateTemplate = ""
@@ -41,7 +41,7 @@ struct WorldTimeApp: App {
             dates.append(Formatters.string(clock.now, template: dateTemplate, in: local))
         }
         if Localization.isChinese && preferences.showLunarInMenuBar {
-            dates.append(Formatters.lunarDate(clock.now, in: local, includeYear: false))
+            dates.append("農曆" + Formatters.lunarDate(clock.now, in: local, includeYear: false))
         }
         // A dot between the local and lunar dates keeps them from reading as one phrase.
         var parts: [String] = []
